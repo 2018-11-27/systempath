@@ -471,9 +471,6 @@ class Path(ReadOnly):
             follow_symlinks=self.follow_symlinks
         )
 
-    def __add__(self, subpath: Union[PathType, PathLink], /) -> PathType:
-        return self.__truediv__(subpath)
-
     def __rtruediv__(self, dirpath: PathLink, /) -> PathType:
         try:
             joined_path: PathLink = join(dirpath, self)
@@ -493,6 +490,9 @@ class Path(ReadOnly):
             strict=self.strict,
             follow_symlinks=self.follow_symlinks
         )
+
+    def __add__(self, subpath: Union[PathType, PathLink], /) -> PathType:
+        return self.__truediv__(subpath)
 
     def __radd__(self, dirpath: PathLink, /) -> PathType:
         return self.__rtruediv__(dirpath)
@@ -820,9 +820,7 @@ class Path(ReadOnly):
                 )
 
             def listxattr(self) -> List[str]:
-                return listxattr(
-                    self, follow_symlinks=self.follow_symlinks
-                )
+                return listxattr(self, follow_symlinks=self.follow_symlinks)
 
             def removexattr(self, attribute: BytesOrStr, /) -> None:
                 removexattr(
@@ -1568,6 +1566,7 @@ class tree:
 
 
 class INI:
+
     def __init__(self, file: File, /):
         self.file = file
 

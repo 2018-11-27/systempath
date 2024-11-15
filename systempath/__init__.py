@@ -24,7 +24,7 @@ business logic rather than the intricacies of low-level file system operations.
 ────────────────────────────────────────────────────────────────────────────────
 Copyright (c) 2022-2024 GQYLPY <http://gqylpy.com>. All rights reserved.
 
-    @version: 1.2.1
+    @version: 1.2.2
     @author: 竹永康 <gqylpy@outlook.com>
     @source: https://github.com/gqylpy/systempath
 
@@ -208,22 +208,22 @@ class Path:
 
     def __truediv__(self, subpath: Union[PathType, PathLink], /) -> PathType:
         """
-        Concatenate paths, where the right path can be an instance of a path or
-        a path link.Return a new concatenated path instance, whose
-        characteristics are inherited from the left path.
+        Connect paths, where the path on the right can be an instance of `path`
+        or a string representing a path link.  Return a new connected path
+        instance whose properties are inherited from the left path.
 
         When `self.strict` is set to True, an exact instance of a directory or
         file is returned. Otherwise, an instance of `SystemPath` is generally
         returned.
         """
 
+    def __rtruediv__(self, dirpath: PathLink, /) -> PathType:
+        """Connect paths, where the path on the left is a path link string.
+        Return a new connected path instance whose properties are inherited from
+        the path on the right."""
+
     def __add__(self, subpath: Union[PathType, PathLink], /) -> PathType:
         return self / subpath
-
-    def __rtruediv__(self, dirpath: PathLink, /) -> PathType:
-        """Concatenate paths, where the left path is a path link. Return a new
-        concatenated path instance, whose characteristics are inherited from the
-        right path."""
 
     def __radd__(self, dirpath: PathLink, /) -> PathType:
         return dirpath / self
@@ -410,7 +410,7 @@ class Path:
 
         When renaming, the destination path is created if the destination path
         does not exist, including any intermediate directories; After renaming,
-        the source path is deleted if it is empty, delete from front to back
+        the source path is deleted if it is empty, delete from back to front
         until the entire path is used or a nonempty directory is found.
 
         Important Notice:
